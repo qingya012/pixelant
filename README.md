@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-MIT%20(no%20patent%20grant)-blue.svg)](LICENSE)
 [![Patent](https://img.shields.io/badge/Patent-Indian%20Patent%20572928-red.svg)](PATENT_NOTICE)
 
-Deep learning-enabled inverse design of compact pixelated antennas using tandem neural networks and transfer learning.
+Deep learning-enabled inverse design of compact pixelated antennas using tandem neural networks, transfer learning, and or evolutionary algorithms.
 
 ---
 
@@ -21,7 +21,7 @@ Indian Institute of Technology Madras
 
 ## Overview
 
-This repository provides complete workflows for neural network-based inverse design of pixelated microstrip antennas. The methods enable rapid synthesis of compact single-band and multi-band antennas from desired electromagnetic specifications, addressing the non-uniqueness of inverse electromagnetic design through a tandem neural network architecture.
+This repository provides complete workflows for neural network-based inverse design of pixelated microstrip antennas. The methods enable rapid synthesis of compact single-band and multi-band antennas from desired electromagnetic specifications through either a tandem neural network architecture or a neural-network backed evolutionary optimization approach. The key work has ben published in the IEEE Transactions on Antennas & Propagation and the IEEE Journal on Multiscale and Multiphysics Computational Techniques (see detailed information below).
 
 ### Key Features
 
@@ -65,7 +65,7 @@ DOI: [10.1109/JMMCT.2024.3509773](https://doi.org/10.1109/JMMCT.2024.3509773)
 - Scaling laws for frequency and dielectric migration
 - 88% reduction in required dielectric simulations (from 500k to 60k samples)
 
-### 3. Related Work: Multi-Port RF Systems
+### Related Work: Multi-Port RF Systems
 
 **"Deep-learning Enabled Generalized Inverse Design of Multi-Port Radio-frequency and Sub-Terahertz Passives and Integrated Circuits"**
 Emir Karahan, Zheng Liu, Aggraj Gupta, Zijian Shao, Jonathan Zhou, Uday Khankhoje, Kaushik Sengupta
@@ -89,7 +89,7 @@ This publication demonstrates the broader applicability of the surrogate-based i
 
 ---
 
-## Technical Approach
+## Technical Overview
 
 ### Pixelated Antenna Model
 
@@ -455,7 +455,8 @@ See [PATENT_NOTICE](PATENT_NOTICE) for complete details and contact information 
 
 ## Acknowledgments
 
-This work was supported by research funding at IIT Madras. We thank our collaborators at Princeton University (Prof. Kaushik Sengupta's group) for contributions to the foundational research.
+This work was supported by research funding at IIT Madras and a research grant “6G: Sub-THz Wireless Communication with Intelligent Reflecting Surfaces (IRS)” 
+numbered R‐23011/3/2022‐CC&BT‐MeitY by the Ministry of Electronics and Information Technology (MeitY), Government of India. We thank our collaborators at Princeton University (Prof. Kaushik Sengupta's group) for contributions to the foundational research.
 
 ---
 
