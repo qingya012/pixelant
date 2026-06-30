@@ -50,6 +50,7 @@ Thumbs.db
 *.mat
 *.pth
 TLfwdmodel
+*.onnx
 
 # Temporary files
 *.log
