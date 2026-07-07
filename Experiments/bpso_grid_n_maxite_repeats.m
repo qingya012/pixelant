@@ -2,13 +2,15 @@
 % Same per-run output as inverse_design_using_bpso_with_TLfwdmodel.m.
 % Loads the ONNX model once, loops over n x maxite x num_repeats.
 %
-% Outputs:
+% Outputs (in bpso_grid_repeats_results/):
 %   bpso_grid_results.csv  - one row per repeat (raw runs)
 %   bpso_grid_summary.csv  - mean/std bestfun and time per (n, maxite)
+%   convergence_nXXX_maxiteYY_repZZ.png
+%   s11_nXXX_maxiteYY_repZZ.png
 %
 % Usage:
 %   cd to folder containing TLfwdmodel.onnx
-%   bpso_grid_n_maxite
+%   bpso_grid_n_maxite_repeats
 
 clc;
 close all;
@@ -18,8 +20,13 @@ maxite_values = 50;
 num_repeats = 3;            % repeats per (n, maxite); use >= 2 for meaningful std
 rng_seed = 42;              % base seed; each repeat uses rng_seed + config_id*100 + repeat_id
 
-raw_results_csv = 'bpso_grid_results.csv';
-summary_csv = 'bpso_grid_summary.csv';
+results_dir = 'bpso_grid_repeats_results';
+raw_results_csv = fullfile(results_dir, 'bpso_grid_results.csv');
+summary_csv = fullfile(results_dir, 'bpso_grid_summary.csv');
+
+if ~exist(results_dir, 'dir')
+    mkdir(results_dir);
+end
 
 num_configs = numel(n_values) * numel(maxite_values);
 fprintf('Grid: %d configs x %d repeats = %d total runs\n', ...
@@ -64,6 +71,7 @@ for n = n_values
 
         for repeat_id = 1:num_repeats
             run_id = run_id + 1;
+            run_tag = sprintf('n%d_maxite%d_rep%d', n, maxite, repeat_id);
             if ~isempty(rng_seed)
                 rng(rng_seed + config_id * 100 + repeat_id);
             end
@@ -192,19 +200,33 @@ for n = n_values
 
             antenna_des = reshape(best_variables, 12, 12);
             output_new = predict(net, antenna_des);
+
+            conv_path = fullfile(results_dir, ['convergence_' run_tag '.png']);
+            s11_path = fullfile(results_dir, ['s11_' run_tag '.png']);
+
+            fig_conv = figure('Visible', 'off');
             plot(ffmin(1:ffite(bestrun), bestrun), '-k');
             xlabel('Iteration');
             ylabel('Fitness function value');
-            title('PSO convergence characteristic');
-            h = figure;
-            figure;
+            title(sprintf('PSO convergence (n=%d, maxite=%d, rep=%d)', n, maxite, repeat_id));
+            grid on;
+            saveas(fig_conv, conv_path);
+            close(fig_conv);
+
+            fig_s11 = figure('Visible', 'off');
             plot(freq, output_new(1, 1:81));
-            legend("Reconstructed", "Original", "FontSize", 14, "Location", "northeast");
-            xlabel("freq", "FontSize", 16);
-            ylabel("Return Loss", "FontSize", 16);
-            print(h, 'fig.png', '-dpng');
+            legend('Reconstructed', 'Location', 'northeast');
+            xlabel('freq');
+            ylabel('Return Loss');
+            title(sprintf('Predicted S11 (n=%d, maxite=%d, rep=%d, bestfun=%.2f)', ...
+                n, maxite, repeat_id, bestfun));
+            grid on;
+            saveas(fig_s11, s11_path);
+            close(fig_s11);
+
             des_ant = antenna_des;
             toc;
+            fprintf('Saved plots to %s and %s\n', conv_path, s11_path);
 
             rep_bestfun(repeat_id) = bestfun;
             rep_time(repeat_id) = bpso_elapsed_sec;
@@ -238,6 +260,7 @@ for n = n_values
 end
 
 fprintf('\nGrid complete.\n');
+fprintf('  Results folder: %s\n', results_dir);
 fprintf('  Raw runs:  %s (%d rows)\n', raw_results_csv, height(Traw));
 fprintf('  Summary:   %s (%d configs)\n', summary_csv, height(Tsum));
 disp(Tsum);
