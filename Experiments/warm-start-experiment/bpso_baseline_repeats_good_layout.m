@@ -1,35 +1,39 @@
-%% BPSO grid over n and maxite (simple driver, with repeats)
-% Same per-run output as inverse_design_using_bpso_with_TLfwdmodel.m.
-% Loads the ONNX model once, loops over n x maxite x num_repeats.
+%% BPSO baseline repeats with per-run layout capture and good_layout.mat export
+% Same BPSO logic and baseline parameters as inverse_design_using_bpso_with_TLfwdmodel.m.
+% Runs the README baseline (n=1000, maxite=50) num_repeats times with independent
+% random initializations, then saves the overall best layout for warm-start experiments.
 %
 % Outputs (in bpso_grid_repeats_results/):
 %   bpso_grid_results.csv  - one row per repeat (raw runs)
 %   bpso_grid_summary.csv  - mean/std bestfun and time per (n, maxite)
 %   convergence_nXXX_maxiteYY_repZZ.png
 %   s11_nXXX_maxiteYY_repZZ.png
+%   good_layout.mat        - overall best layout across all repeats
 %
 % Usage:
 %   cd to folder containing TLfwdmodel.onnx
-%   bpso_grid_n_maxite_repeats
+%   bpso_baseline_repeats_good_layout
 
 clc;
 close all;
 
+% Baseline BPSO settings (README defaults; do not change for this experiment)
 n_values = 1000;
 maxite_values = 50;
-num_repeats = 3;            % repeats per (n, maxite); use >= 2 for meaningful std
+num_repeats = 10;           % 10 independent random-initialization runs
 rng_seed = 42;              % base seed; each repeat uses rng_seed + config_id*100 + repeat_id
 
 results_dir = 'bpso_grid_repeats_results';
 raw_results_csv = fullfile(results_dir, 'bpso_grid_results.csv');
 summary_csv = fullfile(results_dir, 'bpso_grid_summary.csv');
+good_layout_mat = fullfile(results_dir, 'good_layout.mat');
 
 if ~exist(results_dir, 'dir')
     mkdir(results_dir);
 end
 
 num_configs = numel(n_values) * numel(maxite_values);
-fprintf('Grid: %d configs x %d repeats = %d total runs\n', ...
+fprintf('Baseline BPSO: %d configs x %d repeats = %d total runs\n', ...
     num_configs, num_repeats, num_configs * num_repeats);
 
 if ~isfile('TLfwdmodel.onnx')
@@ -69,7 +73,12 @@ for n = n_values
         rep_bestfun = nan(num_repeats, 1);
         rep_time = nan(num_repeats, 1);
 
+        % Per-repeat best layouts and fitness values for warm-start export
+        all_best_layouts = nan(num_repeats, m);
+        all_best_fitness = nan(num_repeats, 1);
+
         for repeat_id = 1:num_repeats
+            run_idx = repeat_id;
             run_id = run_id + 1;
             run_tag = sprintf('n%d_maxite%d_rep%d', n, maxite, repeat_id);
             if ~isempty(rng_seed)
@@ -200,6 +209,10 @@ for n = n_values
             best_variables([6, 7]) = 1;  % B-FIX: lock feed (port) pixels into the exported design vector so it is physically valid
             disp(sprintf('*********************************************************'));
 
+            % Store this repeat's best layout and fitness for warm-start export
+            all_best_layouts(run_idx, :) = best_variables;
+            all_best_fitness(run_idx) = bestfun;
+
             antenna_des = reshape(best_variables, 12, 12);
             antenna_des(6:7, 1) = 1;  % BUGFIX: force feed pixels (port line) so plotted S11 matches the optimized design
             output_new = predict(net, antenna_des);
@@ -242,6 +255,13 @@ for n = n_values
             fprintf('Saved raw row to %s\n', raw_results_csv);
         end
 
+        % Overall best layout across all baseline repeats
+        [~, best_run_idx] = max(all_best_fitness);
+        good_layout = all_best_layouts(best_run_idx, :);
+        save(good_layout_mat, 'good_layout', 'best_run_idx', 'all_best_fitness');
+        fprintf('\nSaved overall best layout (repeat %d, bestfun=%.4f) to %s\n', ...
+            best_run_idx, all_best_fitness(best_run_idx), good_layout_mat);
+
         mean_bestfun = mean(rep_bestfun);
         std_bestfun = std(rep_bestfun);
         mean_time = mean(rep_time);
@@ -262,10 +282,11 @@ for n = n_values
     end
 end
 
-fprintf('\nGrid complete.\n');
+fprintf('\nBaseline repeat study complete.\n');
 fprintf('  Results folder: %s\n', results_dir);
 fprintf('  Raw runs:  %s (%d rows)\n', raw_results_csv, height(Traw));
 fprintf('  Summary:   %s (%d configs)\n', summary_csv, height(Tsum));
+fprintf('  Warm-start: %s\n', good_layout_mat);
 disp(Tsum);
 
 function fit_value = calculatefit(s_params, p_freq, s_freq, calc_r, freq)

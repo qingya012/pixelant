@@ -168,6 +168,7 @@ for cfg = 1:num_configs
 
         gbest
         antenna_de = reshape(gbest, 12, 12);
+        antenna_de(6:7, 1) = 1;  % BUGFIX: force feed pixels (port line), matching in-loop scoring so bestfun is correct
         output_ne = predict(net, antenna_de);
         for jj = 1:length(freq)
             if (abs(output_ne(1, jj)) > 10)
@@ -190,9 +191,11 @@ for cfg = 1:num_configs
     disp(sprintf('Final Results-----------------------------'));
     [bestfun, bestrun] = max(fff)
     best_variables = rgbest(bestrun, :)
+    best_variables([6, 7]) = 1;  % B-FIX: lock feed (port) pixels into the exported design vector so it is physically valid
     disp(sprintf('*********************************************************'));
 
     antenna_des = reshape(best_variables, 12, 12);
+    antenna_des(6:7, 1) = 1;  % BUGFIX: force feed pixels (port line) so plotted S11 matches the optimized design
     output_new = predict(net, antenna_des);
 
     conv_path = fullfile(results_dir, ['convergence_' run_tag '.png']);
