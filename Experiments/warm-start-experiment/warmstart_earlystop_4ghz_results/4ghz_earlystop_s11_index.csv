@@ -1,0 +1,11 @@
+mode,repeat_id,final_bestfun,actual_iterations,stop_reason,s11_png
+mixed,1,803.194658279419,39,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/mixed/s11_mixed_rep1.png
+mixed,2,800.164305686951,19,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/mixed/s11_mixed_rep2.png
+mixed,3,803.45069360733,34,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/mixed/s11_mixed_rep3.png
+mixed,4,803.601646900177,32,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/mixed/s11_mixed_rep4.png
+mixed,5,803.309194087982,25,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/mixed/s11_mixed_rep5.png
+warm,1,803.754316329956,47,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/warm/s11_warm_rep1.png
+warm,2,800.749593734741,29,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/warm/s11_warm_rep2.png
+warm,3,802.61823797226,28,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/warm/s11_warm_rep3.png
+warm,4,803.788192749023,41,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/warm/s11_warm_rep4.png
+warm,5,803.211032390594,30,plateau,/MATLAB Drive/pixelant/warm-start-experiment/warmstart_earlystop_4ghz_results/warm/s11_warm_rep5.png
