@@ -1,2 +1,0 @@
-config_id,n,maxite,num_repeats,mean_bestfun,std_bestfun,mean_bpso_elapsed_sec,std_bpso_elapsed_sec
-1,1000,50,10,793.469589805603,30.0121628380256,713.927026,88.2269259416401

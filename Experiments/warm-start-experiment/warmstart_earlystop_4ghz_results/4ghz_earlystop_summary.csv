@@ -1,4 +1,0 @@
-mode,source,num_repeats,mean_init_bestfun,mean_final_bestfun,std_final_bestfun,min_final_bestfun,mean_iters_to_threshold,median_iters_to_threshold,runs_reaching_threshold,num_failures,mean_actual_iterations,num_plateau_stops,mean_elapsed_sec,std_elapsed_sec,speedup_vs_random
-random,baseline,5,792.367430019379,803.117827987671,1.24004691339124,802.254023551941,14.2,18,5,0,50,0,523.6462658,21.0318726176318,1
-mixed,earlystop,5,793.120090198517,802.744099712372,1.45020119302373,800.164305686951,8.4,11,5,0,29.8,5,341.229122,90.7888994301546,1.53458843937711
-warm,earlystop,5,793.452107620239,802.824274635315,1.2540383956147,800.749593734741,7.8,6,5,0,35,5,390.0393034,100.753468847045,1.34254743364409

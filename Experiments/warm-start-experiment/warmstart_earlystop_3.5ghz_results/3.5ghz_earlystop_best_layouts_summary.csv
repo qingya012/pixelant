@@ -1,4 +1,0 @@
-mode,repeat_id,seed,init_bestfun,final_bestfun,actual_iterations,stop_reason
-good (seed),NaN,NaN,NaN,807.090934276581,NaN,n/a
-mixed,3,10003,786.563539505005,805.273395061493,36,plateau
-warm,3,11003,794.800135135651,803.543705463409,30,plateau

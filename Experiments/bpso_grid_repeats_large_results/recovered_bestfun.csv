@@ -1,7 +1,0 @@
-file,n,maxite,repeat_id,ymin,ymax,stored_bestfun,recovered_final_bestfun,delta_stored_minus_recovered,likely_corrupted
-convergence_n1000_maxite100_rep1.png,1000,100,1,792,810,808.9676,808.9757,-0.0082,0
-convergence_n1000_maxite100_rep2.png,1000,100,2,796,810,807.2212,808.2631,-1.0419,1
-convergence_n1000_maxite100_rep3.png,1000,100,3,785,810,804.4564,806.7118,-2.2553,1
-convergence_n2000_maxite50_rep1.png,2000,50,1,798,810,755.9855,808.3545,-52.3689,1
-convergence_n2000_maxite50_rep2.png,2000,50,2,792,810,808.0012,808.0019,-0.0007,0
-convergence_n2000_maxite50_rep3.png,2000,50,3,794,808,806.0304,807.778,-1.7476,1
